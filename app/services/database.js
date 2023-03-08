@@ -6,6 +6,7 @@ const client = new pg.Pool({
         rejectUnauthorized : false
     }
 });
+
 client.connect();
 
 export {client};
