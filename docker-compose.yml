@@ -1,0 +1,38 @@
+version: '1'
+
+services:
+  myfamilygoal-api:
+    container_name: "myfamilygoal-api"
+    image: myfamilygoal-api
+    volumes:
+      - .:/home/server/myfamilygoal-api
+    ports:
+      - '4008:${PORT}'
+    depends_on:
+      - myfamilygoal-db
+    restart: always
+    networks:
+      - myfamilygoal-network
+
+  myfamilygoal-db:
+    container_name: "myfamilygoal-db"
+    image: postgres
+    restart: always
+    ports:
+      - '5442:${PGPORT}'
+    environment:
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+      - POSTGRES_DB=${PGDATABASE}
+    networks:
+      - myfamilygoal-network
+    volumes:
+      - db-data-myfamilygoal:/var/lib/postgresql/data
+
+volumes:
+  db-data-myfamilygoal:
+
+networks:
+  myfamilygoal-network:
+    name: myfamilygoal-network
+    driver: bridge
